@@ -997,6 +997,18 @@
   .header {
     height: 70px;
   }
+
+  .header.scrolled {
+    height: 60px;
+  }
+
+  .header .sakar-logo-container {
+    height: 50px !important;
+  }
+
+  .header.scrolled .sakar-logo-container {
+    height: 42px !important;
+  }
   
   .nav-menu {
     display: none;
@@ -1037,8 +1049,20 @@
 }
 
 @media (max-width: 480px) {
-  .sakar-logo-container {
-    height: 36px !important;
+  .header {
+    height: 60px;
+  }
+
+  .header.scrolled {
+    height: 52px;
+  }
+
+  .header .sakar-logo-container {
+    height: 40px !important;
+  }
+
+  .header.scrolled .sakar-logo-container {
+    height: 32px !important;
   }
 
   .diamond-grid-container {
