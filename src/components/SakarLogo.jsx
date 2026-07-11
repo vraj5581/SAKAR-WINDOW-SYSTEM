@@ -1,4 +1,3 @@
-import React from 'react';
 import logoImg from '../assets/logo.png';
 
 export default function SakarLogo({ className = '', height = 60, showText = true, light = false }) {
@@ -68,8 +67,7 @@ export default function SakarLogo({ className = '', height = 60, showText = true
         height: `${height}px`, 
         display: 'inline-flex', 
         alignItems: 'center', 
-        justifyContent: 'center',
-        mixBlendMode: 'multiply' // Blends the white background of the image with the header background
+        justifyContent: 'center'
       }}
     >
       <img 
