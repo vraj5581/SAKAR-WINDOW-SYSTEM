@@ -27,6 +27,17 @@ export default function AdminDashboard({ onBackToWebsite }) {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Resize listener for mobile responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // 1. Check Authentication Status on Mount
   useEffect(() => {
@@ -338,7 +349,7 @@ export default function AdminDashboard({ onBackToWebsite }) {
       <header style={{
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #E2E8F0',
-        padding: '15px 30px',
+        padding: isMobile ? '12px 15px' : '15px 30px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -346,39 +357,41 @@ export default function AdminDashboard({ onBackToWebsite }) {
         top: 0,
         zIndex: 90
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <SakarLogo height={42} showText={true} />
-          <span style={{
-            backgroundColor: '#F1F5F9',
-            color: '#0E3F6B',
-            padding: '4px 12px',
-            borderRadius: '15px',
-            fontSize: '0.75rem',
-            fontWeight: '600',
-            letterSpacing: '0.05em'
-          }}>CATALOGUE MANAGER</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '20px' }}>
+          <SakarLogo height={isMobile ? 32 : 42} showText={true} />
+          {!isMobile && (
+            <span style={{
+              backgroundColor: '#F1F5F9',
+              color: '#0E3F6B',
+              padding: '4px 12px',
+              borderRadius: '15px',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              letterSpacing: '0.05em'
+            }}>CATALOGUE MANAGER</span>
+          )}
         </div>
-        <div style={{ display: 'flex', gap: '15px' }}>
+        <div style={{ display: 'flex', gap: isMobile ? '8px' : '15px' }}>
           <button 
             onClick={onBackToWebsite}
             style={{
-              padding: '8px 16px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
               border: '1px solid #E2E8F0',
               borderRadius: '6px',
-              fontSize: '0.875rem',
+              fontSize: isMobile ? '0.75rem' : '0.875rem',
               fontWeight: '600',
               backgroundColor: '#ffffff',
               cursor: 'pointer'
             }}
           >
-            View Website
+            {isMobile ? 'Website' : 'View Website'}
           </button>
           <button 
             onClick={handleLogout}
             style={{
-              padding: '8px 16px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
               borderRadius: '6px',
-              fontSize: '0.875rem',
+              fontSize: isMobile ? '0.75rem' : '0.875rem',
               fontWeight: '600',
               backgroundColor: '#ef4444',
               color: '#ffffff',
@@ -392,7 +405,7 @@ export default function AdminDashboard({ onBackToWebsite }) {
       </header>
 
       {/* Main Container */}
-      <main style={{ maxWdith: '1200px', margin: '40px auto', padding: '0 30px' }}>
+      <main style={{ maxWidth: '1200px', margin: isMobile ? '20px auto' : '40px auto', padding: isMobile ? '0 15px' : '0 30px' }}>
         
         {/* Alerts */}
         {errorMsg && (
@@ -409,13 +422,15 @@ export default function AdminDashboard({ onBackToWebsite }) {
         {/* Dashboard Header Summary */}
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: isMobile ? 'stretch' : 'center',
+          gap: isMobile ? '16px' : '0',
           marginBottom: '30px'
         }}>
           <div>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: '700', color: '#11161B' }}>Product Catalogue</h1>
-            <p style={{ color: '#4E5862', fontSize: '0.9rem', marginTop: '2px' }}>Manage all the architectural window and door profiles</p>
+            <h1 style={{ fontSize: isMobile ? '1.4rem' : '1.75rem', fontWeight: '700', color: '#11161B', margin: 0 }}>Product Catalogue</h1>
+            <p style={{ color: '#4E5862', fontSize: '0.85rem', marginTop: '4px', margin: 0 }}>Manage all the architectural window and door profiles</p>
           </div>
           <button 
             onClick={() => openForm()}
@@ -429,6 +444,7 @@ export default function AdminDashboard({ onBackToWebsite }) {
               fontSize: '0.9rem',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '8px',
               cursor: 'pointer',
               boxShadow: '0 4px 12px rgba(14, 63, 107, 0.2)'
@@ -438,13 +454,13 @@ export default function AdminDashboard({ onBackToWebsite }) {
           </button>
         </div>
 
-        {/* Products Table */}
+        {/* Products List / Grid container */}
         <div style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: isMobile ? 'transparent' : '#ffffff',
           borderRadius: '8px',
-          border: '1px solid #E2E8F0',
+          border: isMobile ? 'none' : '1px solid #E2E8F0',
           overflow: 'hidden',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+          boxShadow: isMobile ? 'none' : '0 2px 8px rgba(0,0,0,0.03)'
         }}>
           {loading && products.length === 0 ? (
             <div style={{ padding: '60px', textAlign: 'center', color: '#4E5862' }}>Loading dynamic systems catalogue...</div>
@@ -452,6 +468,119 @@ export default function AdminDashboard({ onBackToWebsite }) {
             <div style={{ padding: '60px', textAlign: 'center', color: '#4E5862' }}>
               <p style={{ fontSize: '1.1rem', fontWeight: '600' }}>No products found</p>
               <p style={{ fontSize: '0.85rem', color: '#A3ABB2', marginTop: '4px' }}>Click the button above to add your first product system.</p>
+            </div>
+          ) : isMobile ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '15px' }}>
+              {products.map(p => (
+                <div key={p.id} style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '8px',
+                  border: '1px solid #E2E8F0',
+                  padding: '16px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)'
+                }}>
+                  {/* Image and Header */}
+                  <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', alignItems: 'center' }}>
+                    <div style={{
+                      width: '70px',
+                      height: '50px',
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      backgroundColor: '#F1F5F9',
+                      border: '1px solid #E2E8F0',
+                      flexShrink: 0
+                    }}>
+                      <img 
+                        src={p.image_url} 
+                        alt={p.name} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={(e) => { e.target.src = '/src/assets/window_sliding.png'; }}
+                      />
+                    </div>
+                    <div style={{ minWidth: 0, flexGrow: 1 }}>
+                      <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: '700', color: '#11161B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</h4>
+                      <div style={{ color: '#165D95', fontSize: '0.75rem', fontWeight: '500', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.tagline}</div>
+                    </div>
+                    <span style={{
+                      backgroundColor: '#E0F2FE',
+                      color: '#0369A1',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      fontSize: '0.7rem',
+                      fontWeight: '600',
+                      flexShrink: 0
+                    }}>{p.tag}</span>
+                  </div>
+
+                  <p style={{ margin: '0 0 12px 0', color: '#4E5862', fontSize: '0.8rem', lineHeight: '1.4' }}>{p.description}</p>
+
+                  {/* Specs */}
+                  <div style={{
+                    backgroundColor: '#F8FAFC',
+                    borderRadius: '6px',
+                    padding: '10px 12px',
+                    marginBottom: '15px',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '8px 12px',
+                    fontSize: '0.75rem'
+                  }}>
+                    <div>
+                      <div style={{ color: '#64748b', fontSize: '0.65rem', textTransform: 'uppercase', fontWeight: '500', letterSpacing: '0.02em' }}>Profile Width</div>
+                      <div style={{ color: '#0E3F6B', fontWeight: '600', marginTop: '2px' }}>{p.profile_width || '-'}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b', fontSize: '0.65rem', textTransform: 'uppercase', fontWeight: '500', letterSpacing: '0.02em' }}>Glazing</div>
+                      <div style={{ color: '#0E3F6B', fontWeight: '600', marginTop: '2px' }}>{p.glazing_thickness || '-'}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b', fontSize: '0.65rem', textTransform: 'uppercase', fontWeight: '500', letterSpacing: '0.02em' }}>Acoustic</div>
+                      <div style={{ color: '#0E3F6B', fontWeight: '600', marginTop: '2px' }}>{p.acoustic_rating || '-'}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b', fontSize: '0.65rem', textTransform: 'uppercase', fontWeight: '500', letterSpacing: '0.02em' }}>Weather</div>
+                      <div style={{ color: '#0E3F6B', fontWeight: '600', marginTop: '2px' }}>{p.water_tightness || '-'}</div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      onClick={() => openForm(p)}
+                      style={{
+                        flex: 1,
+                        padding: '10px',
+                        backgroundColor: '#F1F5F9',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteProduct(p.id, p.name)}
+                      style={{
+                        flex: 1,
+                        padding: '10px',
+                        backgroundColor: '#FEE2E2',
+                        color: '#991B1B',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
@@ -570,7 +699,7 @@ export default function AdminDashboard({ onBackToWebsite }) {
         }}>
           <div style={{
             width: '100%',
-            maxWidth: '550px',
+            maxWidth: isMobile ? '100%' : '550px',
             height: '100%',
             backgroundColor: '#ffffff',
             boxShadow: '-10px 0 30px rgba(0,0,0,0.15)',
@@ -580,23 +709,23 @@ export default function AdminDashboard({ onBackToWebsite }) {
           }}>
             {/* Modal Header */}
             <div style={{
-              padding: '24px 30px',
+              padding: '20px 24px',
               borderBottom: '1px solid #E2E8F0',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#11161B' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: '700', color: '#11161B', margin: 0 }}>
                 {editingProduct ? 'Edit Product Profile' : 'Add New Product Profile'}
               </h3>
               <button 
                 onClick={() => setIsFormOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#A3ABB2' }}
+                style={{ background: 'none', border: 'none', fontSize: '28px', cursor: 'pointer', color: '#A3ABB2', padding: 0, display: 'flex', alignItems: 'center' }}
               >&times;</button>
             </div>
 
             {/* Modal Form Scroll Area */}
-            <form onSubmit={handleFormSubmit} style={{ flexGrow: 1, overflowY: 'auto', padding: '30px' }}>
+            <form onSubmit={handleFormSubmit} style={{ flexGrow: 1, overflowY: 'auto', padding: isMobile ? '20px' : '30px' }}>
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', color: '#11161B', marginBottom: '6px' }}>System Name</label>
                 <input 
