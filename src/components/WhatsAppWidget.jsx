@@ -78,7 +78,7 @@ export default function WhatsAppWidget() {
             </div>
 
             <div>
-              <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '600' }}>Sakar Window System</h4>
+              <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: '#ffffff' }}>Sakar Window System</h4>
               <p style={{ margin: 0, fontSize: '12px', color: '#c3d3e2' }}>Online | Typically replies instantly</p>
             </div>
 
