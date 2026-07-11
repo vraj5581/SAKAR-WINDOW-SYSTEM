@@ -132,46 +132,69 @@ export default function App() {
       {/* Mobile Nav Drawer */}
       <div className={`mobile-nav-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-drawer-header">
-          <SakarLogo height={40} showText={true} />
+          <SakarLogo height={36} showText={true} light={true} />
           <button 
             className="mobile-drawer-close" 
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close navigation menu"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
 
-        <ul className="mobile-nav-links">
-          <li>
-            <a href="#" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="mobile-link-icon">🏠</span> Home
-            </a>
-          </li>
-          <li>
-            <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="mobile-link-icon">🏢</span> About Us
-            </a>
-          </li>
-          <li>
-            <a href="#products" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="mobile-link-icon">🪟</span> Products
-            </a>
-          </li>
-          <li>
-            <a href="#specs" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="mobile-link-icon">⚙️</span> Specifications
-            </a>
-          </li>
-          <li>
-            <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="mobile-link-icon">📞</span> Contact Us
-            </a>
-          </li>
-        </ul>
+        <nav className="mobile-drawer-nav">
+          <ul className="mobile-nav-links">
+            <li>
+              <a href="#" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mobile-link-icon">🏠</span>
+                <div className="mobile-link-text">
+                  <span className="mobile-link-title">Home</span>
+                  <span className="mobile-link-desc">Back to start</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mobile-link-icon">🏢</span>
+                <div className="mobile-link-text">
+                  <span className="mobile-link-title">About Us</span>
+                  <span className="mobile-link-desc">Our legacy & vision</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#products" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mobile-link-icon">🪟</span>
+                <div className="mobile-link-text">
+                  <span className="mobile-link-title">Products</span>
+                  <span className="mobile-link-desc">Premium systems</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#specs" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mobile-link-icon">⚙️</span>
+                <div className="mobile-link-text">
+                  <span className="mobile-link-title">Specifications</span>
+                  <span className="mobile-link-desc">Technical details</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mobile-link-icon">📞</span>
+                <div className="mobile-link-text">
+                  <span className="mobile-link-title">Contact Us</span>
+                  <span className="mobile-link-desc">Get a custom quote</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
         <div className="mobile-drawer-ctas">
           <button className="btn-brochure" onClick={() => { handleDownloadBrochure(); setIsMobileMenuOpen(false); }}>
             Download Brochure
@@ -184,6 +207,7 @@ export default function App() {
           </a>
         </div>
       </div>
+
 
       {/* Hero Section */}
       <section className="hero-section">
