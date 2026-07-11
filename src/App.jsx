@@ -132,7 +132,7 @@ export default function App() {
       {/* Mobile Nav Drawer */}
       <div className={`mobile-nav-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-drawer-header">
-          <SakarLogo height={36} showText={true} light={true} />
+          <SakarLogo height={36} showText={true} light={false} />
           <button 
             className="mobile-drawer-close" 
             onClick={() => setIsMobileMenuOpen(false)}
