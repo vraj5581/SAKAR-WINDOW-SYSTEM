@@ -28,12 +28,12 @@
 
 /* Logo scaling transitions in header */
 .header .sakar-logo-container {
-  height: 52px !important;
+  height: 64px !important;
   transition: var(--transition-smooth);
 }
 
 .header.scrolled .sakar-logo-container {
-  height: 42px !important;
+  height: 52px !important;
 }
 
 .nav-menu {

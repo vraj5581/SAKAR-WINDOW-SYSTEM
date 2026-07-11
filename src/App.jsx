@@ -572,7 +572,7 @@ export default function App() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-logo-col">
-              <SakarLogo height={44} showText={true} light={true} />
+              <SakarLogo height={56} showText={true} light={true} />
               <p>Architectural aluminium window and door systems designed for modern residences, penthouses, and commercial buildings. Engineered for absolute storm proofing, thermal breaks, and long-term durability.</p>
             </div>
 

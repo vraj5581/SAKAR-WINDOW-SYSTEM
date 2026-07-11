@@ -41,7 +41,7 @@ export default function SakarLogo({ className = '', height = 60, showText = true
         style={{ 
           height: `${height}px`, 
           backgroundColor: '#FFFFFF',
-          padding: '6px 14px',
+          padding: '4px 12px',
           borderRadius: '8px',
           display: 'inline-flex', 
           alignItems: 'center', 
