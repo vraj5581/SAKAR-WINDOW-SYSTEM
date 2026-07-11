@@ -124,20 +124,62 @@ export default function App() {
         </div>
       </header>
 
+      {/* Mobile Nav Overlay Backdrop */}
+      {isMobileMenuOpen && (
+        <div className="mobile-nav-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
+
       {/* Mobile Nav Drawer */}
       <div className={`mobile-nav-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-drawer-header">
+          <SakarLogo height={40} showText={true} />
+          <button 
+            className="mobile-drawer-close" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
         <ul className="mobile-nav-links">
-          <li><a href="#" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a></li>
-          <li><a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</a></li>
-          <li><a href="#products" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Products</a></li>
-          <li><a href="#specs" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Specifications</a></li>
-          <li><a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</a></li>
+          <li>
+            <a href="#" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="mobile-link-icon">🏠</span> Home
+            </a>
+          </li>
+          <li>
+            <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="mobile-link-icon">🏢</span> About Us
+            </a>
+          </li>
+          <li>
+            <a href="#products" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="mobile-link-icon">🪟</span> Products
+            </a>
+          </li>
+          <li>
+            <a href="#specs" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="mobile-link-icon">⚙️</span> Specifications
+            </a>
+          </li>
+          <li>
+            <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="mobile-link-icon">📞</span> Contact Us
+            </a>
+          </li>
         </ul>
         <div className="mobile-drawer-ctas">
           <button className="btn-brochure" onClick={() => { handleDownloadBrochure(); setIsMobileMenuOpen(false); }}>
             Download Brochure
           </button>
           <a href="tel:+919586995244" className="btn-phone" onClick={() => setIsMobileMenuOpen(false)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.753-7.859-4.161-9.102.19-.092.304-.151.304-.151l-3.52-6.793c-.008.002-1.956.967-2.046 1.011-4.994 2.457.652 14.28 6.136 19.349 5.86 5.416 13.914 1.258 13.945 1.226.09-.044.205-.101.303-.148h-.02z"/>
+            </svg>
             +91 95869 95244
           </a>
         </div>
