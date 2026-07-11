@@ -102,11 +102,11 @@ export default function App() {
             <button className="btn-brochure" onClick={handleDownloadBrochure}>
               Brochure
             </button>
-            <a href="tel:+919825904504" className="btn-phone">
+            <a href="tel:+919586995244" className="btn-phone">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.753-7.859-4.161-9.102.19-.092.304-.151.304-.151l-3.52-6.793c-.008.002-1.956.967-2.046 1.011-4.994 2.457.652 14.28 6.136 19.349 5.86 5.416 13.914 1.258 13.945 1.226.09-.044.205-.101.303-.148h-.02z"/>
               </svg>
-              +91 98259 04504
+              +91 95869 95244
             </a>
           </div>
 
@@ -137,8 +137,8 @@ export default function App() {
           <button className="btn-brochure" onClick={() => { handleDownloadBrochure(); setIsMobileMenuOpen(false); }}>
             Download Brochure
           </button>
-          <a href="tel:+919825904504" className="btn-phone" onClick={() => setIsMobileMenuOpen(false)}>
-            +91 98259 04504
+          <a href="tel:+919586995244" className="btn-phone" onClick={() => setIsMobileMenuOpen(false)}>
+            +91 95869 95244
           </a>
         </div>
       </div>
@@ -462,7 +462,7 @@ export default function App() {
                 <div className="contact-detail-icon">📞</div>
                 <div className="contact-detail-content">
                   <h4>Call Our Hotline</h4>
-                  <p><a href="tel:+919825904504">+91 98259 04504</a></p>
+                  <p><a href="tel:+919586995244">+91 95869 95244</a></p>
                 </div>
               </div>
 
@@ -612,7 +612,7 @@ export default function App() {
                 </div>
                 <div className="footer-contact-item">
                   <span>📞</span>
-                  <p>+91 98259 04504</p>
+                  <p>+91 95869 95244</p>
                 </div>
               </div>
             </div>

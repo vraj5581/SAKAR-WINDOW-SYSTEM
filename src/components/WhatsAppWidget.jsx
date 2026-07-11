@@ -13,7 +13,7 @@ export default function WhatsAppWidget() {
   }, []);
 
   const handleWhatsAppRedirect = () => {
-    window.open('https://wa.me/919825904504?text=Hello!%20I%20visited%20your%20website%20and%20would%20like%20to%20know%20more%20about%20Sakar%20Window%20Systems.', '_blank');
+    window.open('https://wa.me/919586995244?text=Hello!%20I%20visited%20your%20website%20and%20would%20like%20to%20know%20more%20about%20Sakar%20Window%20Systems.', '_blank');
   };
 
   return (
