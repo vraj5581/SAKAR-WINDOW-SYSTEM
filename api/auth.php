@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'login') {
         // Read input JSON
         $input = json_decode(file_get_contents('php://input'), true);
-        $username = isset($input['username']) ? trim($input['username']) : '';
-        $password = isset($input['password']) ? $input['password'] : '';
+        $username = isset($input['username']) ? strtolower(trim($input['username'])) : '';
+        $password = isset($input['password']) ? strtolower($input['password']) : '';
         
         if (empty($username) || empty($password)) {
             http_response_code(400);
