@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import SakarLogo from './components/SakarLogo';
 import WhatsAppWidget from './components/WhatsAppWidget';
+import AdminDashboard from './components/AdminDashboard';
 import './App.css';
 
 // Import assets
@@ -10,6 +11,58 @@ import doorFolding from './assets/door_folding.png';
 import windowSlimline from './assets/window_slimline.png';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState('website'); // 'website' | 'admin'
+  const [productsList, setProductsList] = useState([
+    {
+      id: 1,
+      name: 'Thermal Break Sliding Systems',
+      tagline: 'Smooth Glide Tracks',
+      tag: 'Sliding',
+      description: 'Perfectly engineered for wide span openings. Featuring double/triple glazing options, heavy-duty rollers, and multi-point security locking, providing smooth, effortless sliding action with superior sound damping.',
+      profile_width: '45mm to 120mm',
+      glazing_thickness: 'Up to 32mm DGU',
+      acoustic_rating: 'Up to 38 dB',
+      water_tightness: 'Class E900 (EN 12208)',
+      image_url: windowSliding
+    },
+    {
+      id: 2,
+      name: 'Premium Casement Series',
+      tagline: 'Classic Swing Windows',
+      tag: 'Casement',
+      description: 'High-performance outward/inward opening casement windows, offering 100% opening space and maximum airflow. Double compression seals ensure absolute water tightness and air insulation.',
+      profile_width: '50mm to 65mm',
+      glazing_thickness: 'Up to 28mm DGU',
+      acoustic_rating: 'Up to 40 dB',
+      water_tightness: 'Class C5 (EN 12210)',
+      image_url: windowCasement
+    },
+    {
+      id: 3,
+      name: 'Minimalist Slimline Series',
+      tagline: 'Floor-to-Ceiling Views',
+      tag: 'Slimline',
+      description: 'Ultra-thin sightlines of just 20mm, maximizing natural light and offering uninterrupted panoramas. Clean flush floor tracks merge indoor spaces with outdoor vistas seamlessly.',
+      profile_width: 'Only 20mm (Interlock)',
+      glazing_thickness: 'Double / Triple Glazed',
+      acoustic_rating: 'Uf down to 1.6 W/m²K',
+      water_tightness: 'Up to 4.5 Meters Height',
+      image_url: windowSlimline
+    },
+    {
+      id: 4,
+      name: 'Heavy Duty Folding Bi-Fold Doors',
+      tagline: 'Expand Your Space',
+      tag: 'Folding',
+      description: 'Transform whole walls into open spaces. Engineered to carry large, heavy glass panels with multiple fold configurations (up to 7 panels left or right), sliding smooth on bottom tracks.',
+      profile_width: '120 kg per panel',
+      glazing_thickness: 'Up to 14 Panels total',
+      acoustic_rating: 'Top & Bottom Security Bolts',
+      water_tightness: 'EPDM Gasket Systems',
+      image_url: doorFolding
+    }
+  ]);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +72,36 @@ export default function App() {
     product: 'Sliding Systems',
     message: ''
   });
+
+  // Handle Hash-based Routing (#admin)
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#admin') {
+        setCurrentView('admin');
+      } else {
+        setCurrentView('website');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // initial check
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Fetch Products from Database or Fallback
+  useEffect(() => {
+    if (currentView === 'website') {
+      fetch('/api/get_products.php')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            setProductsList(data);
+          }
+        })
+        .catch(() => {
+          console.log('API offline. Using built-in catalogue fallback.');
+        });
+    }
+  }, [currentView]);
 
   // Track window scroll to shrink header
   useEffect(() => {
@@ -68,6 +151,10 @@ export default function App() {
   const handleDownloadBrochure = () => {
     alert("Starting download of Sakar Window System Catalogue (PDF)...");
   };
+
+  if (currentView === 'admin') {
+    return <AdminDashboard onBackToWebsite={() => { window.location.hash = ''; }} />;
+  }
 
   return (
     <>
@@ -297,137 +384,53 @@ export default function App() {
           </div>
 
           <div className="products-grid">
-            {/* Sliding Systems */}
-            <div className="product-card">
-              <div className="product-img-container">
-                <span className="product-tag">Sliding</span>
-                <img src={windowSliding} alt="Premium Sliding Window System" />
-              </div>
-              <div className="product-info">
-                <h3>Thermal Break Sliding Systems</h3>
-                <p className="product-desc">Perfectly engineered for wide span openings. Featuring double/triple glazing options, heavy-duty rollers, and multi-point security locking, providing smooth, effortless sliding action with superior sound damping.</p>
-                <div className="product-specs">
-                  <div className="spec-item">
-                    <span className="spec-name">Profile Width</span>
-                    <span className="spec-val">45mm to 120mm</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Glazing Thickness</span>
-                    <span className="spec-val">Up to 32mm DGU</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Acoustic Rating</span>
-                    <span className="spec-val">Up to 38 dB</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Water Tightness</span>
-                    <span className="spec-val">Class E900 (EN 12208)</span>
-                  </div>
+            {productsList.map((product) => (
+              <div className="product-card" key={product.id}>
+                <div className="product-img-container">
+                  <span className="product-tag">{product.tag}</span>
+                  <img 
+                    src={product.image_url} 
+                    alt={product.name} 
+                    onError={(e) => {
+                      // Fallback in case dynamic upload fails to load
+                      if (product.tag === 'Sliding') e.target.src = windowSliding;
+                      else if (product.tag === 'Casement') e.target.src = windowCasement;
+                      else if (product.tag === 'Slimline') e.target.src = windowSlimline;
+                      else if (product.tag === 'Folding') e.target.src = doorFolding;
+                    }}
+                  />
                 </div>
-                <a href="#contact" className="product-action" onClick={() => setFormData(prev => ({ ...prev, product: 'Sliding Systems' }))}>
-                  Enquire Now
-                </a>
-              </div>
-            </div>
-
-            {/* Casement Systems */}
-            <div className="product-card">
-              <div className="product-img-container">
-                <span className="product-tag">Casement</span>
-                <img src={windowCasement} alt="Premium Casement Window System" />
-              </div>
-              <div className="product-info">
-                <h3>Premium Casement Series</h3>
-                <p className="product-desc">High-performance outward/inward opening casement windows, offering 100% opening space and maximum airflow. Double compression seals ensure absolute water tightness and air insulation.</p>
-                <div className="product-specs">
-                  <div className="spec-item">
-                    <span className="spec-name">Profile Width</span>
-                    <span className="spec-val">50mm to 65mm</span>
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="product-desc">{product.description}</p>
+                  <div className="product-specs">
+                    <div className="spec-item">
+                      <span className="spec-name">Profile Width</span>
+                      <span className="spec-val">{product.profile_width}</span>
+                    </div>
+                    <div className="spec-item">
+                      <span className="spec-name">Glazing Thickness</span>
+                      <span className="spec-val">{product.glazing_thickness}</span>
+                    </div>
+                    <div className="spec-item">
+                      <span className="spec-name">Acoustic Rating</span>
+                      <span className="spec-val">{product.acoustic_rating}</span>
+                    </div>
+                    <div className="spec-item">
+                      <span className="spec-name">Water/Wind Proof</span>
+                      <span className="spec-val">{product.water_tightness}</span>
+                    </div>
                   </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Glazing Thickness</span>
-                    <span className="spec-val">Up to 28mm DGU</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Acoustic Rating</span>
-                    <span className="spec-val">Up to 40 dB</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Wind Load Class</span>
-                    <span className="spec-val">Class C5 (EN 12210)</span>
-                  </div>
+                  <a 
+                    href="#contact" 
+                    className="product-action" 
+                    onClick={() => setFormData(prev => ({ ...prev, product: product.name }))}
+                  >
+                    Enquire Now
+                  </a>
                 </div>
-                <a href="#contact" className="product-action" onClick={() => setFormData(prev => ({ ...prev, product: 'Casement Windows' }))}>
-                  Enquire Now
-                </a>
               </div>
-            </div>
-
-            {/* Slimline Minimalist */}
-            <div className="product-card">
-              <div className="product-img-container">
-                <span className="product-tag">Slimline</span>
-                <img src={windowSlimline} alt="Minimalist Slimline Window System" />
-              </div>
-              <div className="product-info">
-                <h3>Minimalist Slimline Series</h3>
-                <p className="product-desc">Ultra-thin sightlines of just 20mm, maximizing natural light and offering uninterrupted panoramas. Clean flush floor tracks merge indoor spaces with outdoor vistas seamlessly.</p>
-                <div className="product-specs">
-                  <div className="spec-item">
-                    <span className="spec-name">Sightline (Interlock)</span>
-                    <span className="spec-val">Only 20mm</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Max Panel Height</span>
-                    <span className="spec-val">Up to 4.5 Meters</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Thermal insulation</span>
-                    <span className="spec-val">Uf down to 1.6 W/m²K</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Glazing Option</span>
-                    <span className="spec-val">Double / Triple Glazed</span>
-                  </div>
-                </div>
-                <a href="#contact" className="product-action" onClick={() => setFormData(prev => ({ ...prev, product: 'Minimalist Slimline' }))}>
-                  Enquire Now
-                </a>
-              </div>
-            </div>
-
-            {/* Folding Bi-Fold Doors */}
-            <div className="product-card">
-              <div className="product-img-container">
-                <span className="product-tag">Folding</span>
-                <img src={doorFolding} alt="Aluminium Bi-Fold Folding Door System" />
-              </div>
-              <div className="product-info">
-                <h3>Heavy Duty Folding Bi-Fold Doors</h3>
-                <p className="product-desc">Transform whole walls into open spaces. Engineered to carry large, heavy glass panels with multiple fold configurations (up to 7 panels left or right), sliding smooth on bottom tracks.</p>
-                <div className="product-specs">
-                  <div className="spec-item">
-                    <span className="spec-name">Max Panel Weight</span>
-                    <span className="spec-val">120 kg per panel</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Door Configuration</span>
-                    <span className="spec-val">Up to 14 Panels total</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Locking Mechanism</span>
-                    <span className="spec-val">Top & Bottom Security Bolts</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-name">Weather Seals</span>
-                    <span className="spec-val">EPDM Gasket Systems</span>
-                  </div>
-                </div>
-                <a href="#contact" className="product-action" onClick={() => setFormData(prev => ({ ...prev, product: 'Folding Bi-Fold Doors' }))}>
-                  Enquire Now
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -657,11 +660,12 @@ export default function App() {
             <div className="footer-links-col">
               <h4>Quick Links</h4>
               <ul className="footer-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#products">Product Catalogue</a></li>
-                <li><a href="#specs">Technical Specifications</a></li>
-                <li><a href="#contact">Contact Us / Quote</a></li>
+                 <li><a href="#">Home</a></li>
+                 <li><a href="#about">About Us</a></li>
+                 <li><a href="#products">Product Catalogue</a></li>
+                 <li><a href="#specs">Technical Specifications</a></li>
+                 <li><a href="#contact">Contact Us / Quote</a></li>
+                 <li><a href="#admin" style={{ opacity: 0.65 }}>Admin Panel</a></li>
               </ul>
             </div>
 
