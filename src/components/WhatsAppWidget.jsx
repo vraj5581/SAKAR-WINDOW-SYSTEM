@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logoImg from '../assets/logo.png';
 
 export default function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,11 +50,20 @@ export default function WhatsAppWidget() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0F3F6B',
-                fontWeight: 'bold',
-                fontSize: '18px'
+                overflow: 'hidden',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
               }}>
-                S
+                <img 
+                  src={logoImg} 
+                  alt="Sakar Logo Icon" 
+                  style={{ 
+                    height: '142%', // Scale up to hide text
+                    width: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'top center',
+                    display: 'block'
+                  }} 
+                />
               </div>
               <span style={{
                 width: '11px',
